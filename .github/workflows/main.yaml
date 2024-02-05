@@ -1,0 +1,35 @@
+name: Scan and Call Python Script
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  scan-and-call-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Scan and call Python script
+      run: |
+        # Scan files in /schemas directory and compare to previous state
+        CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- schemas/)
+
+        if [ -n "$CHANGED_FILES" ]; then
+          for FILE in $CHANGED_FILES; do
+            python publish.py "$(cat $FILE)"
+          done
+        else
+          echo "No changes in /schemas directory."
+        fi
