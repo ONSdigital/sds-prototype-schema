@@ -6,6 +6,7 @@ import os
 import requests
 import subprocess
 import json
+import random
  
 def publish_schema_to_sds(schema, survey_id):
     """
@@ -20,7 +21,7 @@ def publish_schema_to_sds(schema, survey_id):
     """
  
     # Service account key file, that has been granted required roles to connect SDS service
-    key_file = "sdss-293-key.json"
+    key_file = os.getenv('GCP_SA_KEY')
  
     # Obtain the Client ID of OAuth Client on SDS project. Require the SDS Project ID, request it from SDS team
     project_id = "ons-sds-jamesb-sandbox"
@@ -126,17 +127,32 @@ def _make_iap_request(req_url, audience, key_file, data):
         logging.error("HTTP error occurred: %s", error)
         return response
     
-if __name__ == "__main__":
-
-    # Retrieve the changed file contents as JSON
+def _retrieve_schema_file() -> dict:
+    """
+    Function to retrieve the changed file contents as JSON
+ 
+    Returns:
+        dict: The schema being published
+    """
     try:
         with open(sys.argv[1], "r") as file:
             schema = json.load(file)
-            print(schema)
+            return schema
     except:
         print("Error reading json file - ")
         sys.exit(1)
+    
+if __name__ == "__main__":
 
-    # survey_id = "12345"
-    # response = publish_schema_to_sds(schema, survey_id)
-    # print(response.status_code)
+    # for now - use a list of survey_ids and pick one at random - this implementation will change
+    survey_ids = ["041", "132", "133", "156", "141", "221", "241", "068", "071", "066", "076"]
+    survey_id = random.choice(survey_ids)
+
+    # Retrieve the schema file
+    schema = _retrieve_schema_file()
+
+    # Publish the schema to SDS
+    response = publish_schema_to_sds(schema, survey_id)
+
+    print(response.status_code)
+    print("Survey ID: " + survey_id)
