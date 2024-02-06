@@ -3,6 +3,7 @@
     "$id": "<survey-name>.json",
     "title": "SDS schema for the <survey-name> survey",
     "type": "object",
+    
     "properties": {
       "schema_version": {
         "const": "v1",
@@ -10,7 +11,7 @@
       },
       "identifier": {
         "type": "string",
-        "description": "The unique top-level identifier. This is the reporting unit reference without the check letter appended.",
+        "description": "The unique t   op-level identifier. This is the reporting unit reference without the check letter appended.",
         "minLength": 11,
         "pattern": "^[a-zA-Z0-9]+$",
         "examples": ["34942807969"]

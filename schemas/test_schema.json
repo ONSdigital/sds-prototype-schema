@@ -7,8 +7,6 @@
       "schema_version": {
         "const": "v1",
         "description": "Version 15 of the    schema spec"
-
-        
       },
       "identifier": {
         "type": "string",
