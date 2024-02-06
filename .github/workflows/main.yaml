@@ -28,8 +28,15 @@ jobs:
 
     - name: Scan and call Python script
       run: |
-        # Scan files in /schemas directory and compare to previous state
-        CHANGED_FILES=$(git diff --name-only --ignore-blank-lines --ignore-all-space ${{ github.event.before }} ${{ github.sha }} -- schemas/)
+
+        
+        if [ -z "${{ github.event.before }}" ]; then
+          # handle case where github.event.before is not available e.g. first commit
+          CHANGED_FILES=$(ls schemas/)
+        else
+          # get list of changed files using git diff
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- schemas/)
+        fi
 
         if [ -n "$CHANGED_FILES" ]; then
           for FILE in $CHANGED_FILES; do
