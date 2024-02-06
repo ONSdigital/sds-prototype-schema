@@ -49,7 +49,7 @@ jobs:
                   # If the contents are not the same, add the name of the file to the array
                   CHANGED_FILES+=($FILE)
               fi
-          done ${{ github.sha }} -- schemas/)
+          done
           fi
 
         # Process each changed file
