@@ -19,7 +19,7 @@
         "type": "object",
         "propertyNames": {
           "pattern": "^[a-z0-9][a-z0-9\\-]*[a-z0-9]$",
-          "description": "Names for repeating items must be lower case, start with a letter or number, end with a letter or number, and contain only letters, numbers, or hyphens. This field can be shown in eQ URLs therefore no other characters are allowed."
+          "description": "Names for repeating items must be lower case NOT UPPER CASE, start with a letter or number, end with a letter or number, and contain only letters, numbers, or hyphens. This field can be shown in eQ URLs therefore no other characters are allowed."
         },
         "properties": {
           "<some-name>": {
