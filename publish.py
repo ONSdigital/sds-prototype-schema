@@ -23,7 +23,10 @@ def publish_schema_to_sds(schema, survey_id):
     # Service account key file, that has been granted required roles to connect SDS service
     key_file = os.environ["GCP_SA_KEY"]
     key_dict = json.loads(key_file)
-    key_file = str(key_dict)
+    # Write the key dict to a temp file
+    with open("key.json", "w") as key_file:
+        json.dump(key_dict, key_file)
+    key_file = "key.json"
  
     # Obtain the Client ID of OAuth Client on SDS project. Require the SDS Project ID, request it from SDS team
     project_id = "ons-sds-jamesb-sandbox"
