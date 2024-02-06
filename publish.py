@@ -158,7 +158,7 @@ def _make_temp_file(key) -> None:
     Returns:
         None
     """
-    key_dict = json.loads(key_file)
+    key_dict = json.loads(key)
     # Write the key dict to a temp file
     with open("key.json", "w") as key_file:
         json.dump(key_dict, key_file)
