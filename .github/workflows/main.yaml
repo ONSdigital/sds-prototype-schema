@@ -50,3 +50,5 @@ jobs:
         else
           echo "No changes in /schemas directory."
         fi
+      env:
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
