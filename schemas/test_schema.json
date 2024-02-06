@@ -6,7 +6,7 @@
     "properties": {
       "schema_version": {
         "const": "v1",
-        "description": "Version 13 of the schema spec"
+        "description": "Version 14 of the schema spec"
       },
       "identifier": {
         "type": "string",
