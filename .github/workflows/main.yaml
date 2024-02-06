@@ -53,8 +53,8 @@ jobs:
           fi
 
         # Process each changed file
-        if [ -n "$CHANGED_FILES" ]; then
-          for FILE in $CHANGED_FILES; do
+        if [ ${#CHANGED_FILES[@]} -ne 0 ]; then
+          for FILE in "${CHANGED_FILES[@]}"; do
             # Call Python script with the filename
             echo $FILE
             python publish.py "$FILE"
