@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -22,14 +22,14 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Set up GCP credentials
-      uses: google-github-actions/auth@v0
+      uses: google-github-actions/auth@v2
       with:
         credentials_json: ${{ secrets.GCP_SA_KEY }}
 
     - name: Scan and call Python script
       run: |
         # Scan files in /schemas directory and compare to previous state
-        CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- schemas/)
+        CHANGED_FILES=$(git diff --name-only --ignore-blank-lines --ignore-all-space ${{ github.event.before }} ${{ github.sha }} -- schemas/)
 
         if [ -n "$CHANGED_FILES" ]; then
           for FILE in $CHANGED_FILES; do
