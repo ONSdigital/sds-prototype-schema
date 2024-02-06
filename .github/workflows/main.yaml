@@ -21,6 +21,11 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
 
+    - name: Set up GCP credentials
+      uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
     - name: Scan and call Python script
       run: |
         # Scan files in /schemas directory and compare to previous state
