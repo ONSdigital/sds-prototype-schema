@@ -21,24 +21,25 @@ def publish_schema_to_sds(schema, survey_id):
     """
  
     # Service account key file, that has been granted required roles to connect SDS service
-    key_file = os.environ["GCP_SA_KEY"]
-    key_dict = json.loads(key_file)
-    # Write the key dict to a temp file
-    with open("key.json", "w") as key_file:
-        json.dump(key_dict, key_file)
+    # create the temporary key file
+    _make_temp_file(os.environ["GCP_SA_KEY"])
     key_file = "key.json"
- 
-    # Obtain the Client ID of OAuth Client on SDS project. Require the SDS Project ID, request it from SDS team
-    project_id = "ons-sds-jamesb-sandbox"
-    audience = _get_client_id(project_id, key_file)
-     
-    # The URL to access the load balancer on SDS project. Request it from SDS team
-    base_url = "https://35.190.114.159.nip.io"
- 
-    # Make request to IAP of SDS load balancer
-    response = _make_iap_request(f"{base_url}/v1/schema?survey_id={survey_id}", audience, key_file, schema)
 
-    return response
+    try:
+        # Obtain the Client ID of OAuth Client on SDS project. Require the SDS Project ID, request it from SDS team
+        project_id = "ons-sds-jamesb-sandbox"
+        audience = _get_client_id(project_id, key_file)
+        
+        # The URL to access the load balancer on SDS project. Request it from SDS team
+        base_url = "https://35.190.114.159.nip.io"
+    
+        # Make request to IAP of SDS load balancer
+        response = _make_iap_request(f"{base_url}/v1/schema?survey_id={survey_id}", audience, key_file, schema)
+
+        return response
+    finally:
+        # ensure temp file is removed after use even if an exception is raised
+        os.remove("key.json")
  
  
 def _get_client_id(project_id, key_file) -> str:
@@ -146,6 +147,22 @@ def _retrieve_schema_file() -> dict:
     except:
         print("Error reading json file - ")
         sys.exit(1)
+
+def _make_temp_file(key) -> None:
+    """
+    Function to create a temp file for the key dict
+
+    Parameters:
+        key(str): The key file of the service account from the environment variable
+
+    Returns:
+        None
+    """
+    key_dict = json.loads(key_file)
+    # Write the key dict to a temp file
+    with open("key.json", "w") as key_file:
+        json.dump(key_dict, key_file)
+
     
 if __name__ == "__main__":
 
