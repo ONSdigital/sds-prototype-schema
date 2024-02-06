@@ -21,7 +21,12 @@ def publish_schema_to_sds(schema, survey_id):
     """
  
     # Service account key file, that has been granted required roles to connect SDS service
-    key_file = str(os.getenv('GCP_SA_KEY'))
+    key_json = str(os.getenv('GCP_SA_KEY'))
+    # Write the key file to a file
+    key_file = "/tmp/key.json"
+    with open(key_file, "w") as file:
+        file.write(key_json)
+    
  
     # Obtain the Client ID of OAuth Client on SDS project. Require the SDS Project ID, request it from SDS team
     project_id = "ons-sds-jamesb-sandbox"
@@ -32,7 +37,9 @@ def publish_schema_to_sds(schema, survey_id):
  
     # Make request to IAP of SDS load balancer
     response = _make_iap_request(f"{base_url}/v1/schema?survey_id={survey_id}", audience, key_file, schema)
- 
+    
+    # delete the key file
+    os.remove(key_file)
     return response
  
  
