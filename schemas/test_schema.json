@@ -11,6 +11,7 @@
       "identifier": {
         "type": "string",
         "description": "The unique top-level identifier. This is the reporting unit reference without the check letter appended.",
+        
         "minLength": 11,
         "pattern": "^[a-zA-Z0-9]+$",
         "examples": ["34942807969"]
@@ -19,7 +20,7 @@
         "type": "object",
         "propertyNames": {
           "pattern": "^[a-z0-9][a-z0-9\\-]*[a-z0-9]$",
-          "description": "Names for repeating items must be lower case, start with a letter or number, end with a letter or number, and contain only letters, numbers, or hyphens. This field can be shown in eQ URLs therefore no other characters are allowed."
+          "description": "Names for repea     ting items must be lower case, start with a letter or number, end with a letter or number, and contain only letters, numbers, or hyphens. This field can be shown in eQ URLs therefore no other characters are allowed."
         },
         "properties": {
           "<some-name>": {
