@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'schemas/**'
+    
 
 jobs:
   scan-and-call-script:
@@ -28,28 +27,20 @@ jobs:
       with:
         credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-    - name: List files in /schemas directory
-      id: list-files
+    - name: Scan and call Python script
       run: |
-          cd schemas
-          find . -type f > ../file_list.txt
-  
-    - name: Compare files with previous state
-      id: compare-files
-      run: |
-        CHANGED_FILES=""
-        while IFS= read -r FILE; do
-          PREVIOUS_FILE=$(git show HEAD^:"schemas/$FILE" 2>/dev/null)
-          CURRENT_FILE=$(cat "schemas/$FILE")
-          if ! git diff --ignore-all-space --exit-code <(echo "$PREVIOUS_FILE") <(echo "$CURRENT_FILE") &> /dev/null; then
-            CHANGED_FILES="$CHANGED_FILES $FILE"
-          fi
-        done < file_list.txt
-        echo "::set-output name=changed_files::$CHANGED_FILES"
+        if [ -z "${{ github.event.before}}"] || [ -z "${{ github.sha}}"]; then
+          echo "Error: 'github.event.before' or 'github.sha' is not set"
+          exit 1
+        fi
+        
+        if [ ! -d "schemas/" ]; then
+          echo "Error: schemas/ directory does not exist."
+          exit 1
+        fi
 
-    - name: Run Python script for changed files
-      if: steps.compare-files.outputs.changed_files != ''
-      run: |
-        for FILE in ${{ steps.compare-files.outputs.changed_files }}; do
-          python publish.py "schemas/$FILE"
+        CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- schemas/) || {
+          echo "Error: git diff command failed."
+          exit 1
+        }
         done
