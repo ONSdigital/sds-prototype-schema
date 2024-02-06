@@ -31,12 +31,11 @@ jobs:
 
     - name: Scan and call Python script
       run: |
-        # Get the list of changed files
+        # If the last commit doesn't exist assume all files in /schemas directory are changed
         if [ -z "${{ github.event.before }}" ]; then
-          # Handle case where github.event.before is not available (e.g., first commit)
           CHANGED_FILES=$(ls schemas/)
         else
-          # Get list of changed files using git diff
+          # Get list of changed files using git diff - ignoring blank lines and all space changes
           CHANGED_FILES=$(git diff --name-only --ignore-blank-lines --ignore-all-space ${{ github.event.before }} ${{ github.sha }} -- schemas/)
         fi
 
