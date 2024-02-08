@@ -22,12 +22,12 @@ def publish_schema_to_sds(schema, survey_id):
  
     # Service account key file, that has been granted required roles to connect SDS service
     # create the temporary key file
-    # _make_temp_file(os.environ["GCP_SA_KEY"])
+    # _make_temp_file(os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
     # key_file = "key.json"
     try:
-        key_file = os.environ["GCP_SA_KEY"]
+        key_file = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
     except KeyError:
-        print("Error: GCP_SA_KEY environment variable not set")
+        print("Error: GOOGLE_APPLICATION_CREDENTIALS environment variable not set")
         sys.exit(1)
 
     try:
@@ -63,8 +63,8 @@ def _get_client_id(project_id, key_file) -> str:
  
     try:
         # Set to use the supplied SA as the default configuration to connect gcloud
-        cmd_auth = "gcloud auth activate-service-account --key-file=" + key_file
-        subprocess.run(cmd_auth, shell=True)
+        #cmd_auth = "gcloud auth activate-service-account --key-file=" + key_file
+        #subprocess.run(cmd_auth, shell=True)
         # Fetch for the client ID of OAuth Client on SDS
         cmd_get_oauth_brand_name = "gcloud iap oauth-brands list --format='value(name)' --limit=1 --project=" + project_id
         oauth_brand_name = subprocess.check_output(cmd_get_oauth_brand_name, shell=True)
@@ -74,8 +74,8 @@ def _get_client_id(project_id, key_file) -> str:
         oauth_client_name = oauth_client_name.decode().strip()
         oauth_client_id = oauth_client_name[oauth_client_name.rfind('/')+1:]
         # Resume to use original SA stored in GOOGLE_APPLICATION_CREDENTIALS. Uncomment the two lines below if needed
-        cmd_resume_auth = "gcloud auth activate-service-account --key-file=" + os.environ["GCP_SA_KEY"]
-        subprocess.run(cmd_resume_auth, shell=True)
+        #cmd_resume_auth = "gcloud auth activate-service-account --key-file=" + os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+        #subprocess.run(cmd_resume_auth, shell=True)
         return oauth_client_id
     except subprocess.CalledProcessError as e:
         print(e.output)
