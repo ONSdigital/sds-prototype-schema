@@ -24,7 +24,11 @@ def publish_schema_to_sds(schema, survey_id):
     # create the temporary key file
     # _make_temp_file(os.environ["GCP_SA_KEY"])
     # key_file = "key.json"
-    key_file = os.environ["GCP_SA_KEY"]
+    try:
+        key_file = os.environ["GCP_SA_KEY"]
+    except KeyError:
+        print("Error: GCP_SA_KEY environment variable not set")
+        sys.exit(1)
 
     try:
         # Obtain the Client ID of OAuth Client on SDS project. Require the SDS Project ID, request it from SDS team
@@ -70,8 +74,8 @@ def _get_client_id(project_id, key_file) -> str:
         oauth_client_name = oauth_client_name.decode().strip()
         oauth_client_id = oauth_client_name[oauth_client_name.rfind('/')+1:]
         # Resume to use original SA stored in GOOGLE_APPLICATION_CREDENTIALS. Uncomment the two lines below if needed
-        # cmd_resume_auth = "gcloud auth activate-service-account --key-file=" + os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
-        # subprocess.run(cmd_resume_auth, shell=True)
+        cmd_resume_auth = "gcloud auth activate-service-account --key-file=" + os.environ["GCP_SA_KEY"]
+        subprocess.run(cmd_resume_auth, shell=True)
         return oauth_client_id
     except subprocess.CalledProcessError as e:
         print(e.output)
@@ -93,6 +97,8 @@ def _generate_headers(audience, key_file) -> dict[str, str]:
     headers = {}
  
     auth_req = google.auth.transport.requests.Request()
+    # convert the key file to a dict
+    key_file = json.loads(key_file)
     credentials = service_account.IDTokenCredentials.from_service_account_info(key_file, target_audience=audience)
     credentials.refresh(auth_req)
     auth_token = credentials.token
@@ -150,22 +156,6 @@ def _retrieve_schema_file() -> dict:
         print("Error reading json file - ")
         sys.exit(1)
 
-def _make_temp_file(key) -> None:
-    """
-    Function to create a temp file for the key dict
-
-    Parameters:
-        key(str): The key file of the service account from the environment variable
-
-    Returns:
-        None
-    """
-    key_dict = json.loads(key)
-    # Write the key dict to a temp file
-    with open("key.json", "w") as key_file:
-        json.dump(key_dict, key_file)
-
-    
 if __name__ == "__main__":
 
     # for now - use a list of survey_ids and pick one at random - this implementation will change
@@ -180,6 +170,3 @@ if __name__ == "__main__":
 
     print(response.status_code)
     print("Survey ID: " + survey_id)
-
-    # test comment
-    
