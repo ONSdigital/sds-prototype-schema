@@ -22,8 +22,9 @@ def publish_schema_to_sds(schema, survey_id):
  
     # Service account key file, that has been granted required roles to connect SDS service
     # create the temporary key file
-    _make_temp_file(os.environ["GCP_SA_KEY"])
-    key_file = "key.json"
+    # _make_temp_file(os.environ["GCP_SA_KEY"])
+    # key_file = "key.json"
+    key_file = os.environ["GCP_SA_KEY"]
 
     try:
         # Obtain the Client ID of OAuth Client on SDS project. Require the SDS Project ID, request it from SDS team
@@ -91,7 +92,7 @@ def _generate_headers(audience, key_file) -> dict[str, str]:
     headers = {}
  
     auth_req = google.auth.transport.requests.Request()
-    credentials = service_account.IDTokenCredentials.from_service_account_file(key_file, target_audience=audience)
+    credentials = service_account.IDTokenCredentials.from_service_account_info(key_file, target_audience=audience)
     credentials.refresh(auth_req)
     auth_token = credentials.token
  
