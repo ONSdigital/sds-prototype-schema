@@ -40,7 +40,8 @@ def publish_schema_to_sds(schema, survey_id):
         return response
     finally:
         # ensure temp file is removed after use even if an exception is raised
-        os.remove("key.json")
+        # os.remove("key.json")
+        pass
  
  
 def _get_client_id(project_id, key_file) -> str:
