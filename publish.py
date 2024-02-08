@@ -20,51 +20,43 @@ def publish_schema_to_sds(schema, survey_id):
         HTTP Response, includes status code and message. Refer to openapi.yaml for detail
     """
  
-    # Service account key file, that has been granted required roles to connect SDS service
-    # create the temporary key file
-    # _make_temp_file(os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
-    # key_file = "key.json"
-    try:
-        key_file = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
-    except KeyError:
-        print("Error: GOOGLE_APPLICATION_CREDENTIALS environment variable not set")
-        sys.exit(1)
+    # Service account key, that has been granted required roles to connect SDS service
+    service_account_key = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+
+    # The URL to access the load balancer on SDS project.
+    base_url = os.environ["SANDBOX_LOAD_BALANCER_URL"]
+
+    # The SDS project ID
+    project_id = os.environ["SDS_PROJECT_ID"]
 
     try:
         # Obtain the Client ID of OAuth Client on SDS project. Require the SDS Project ID, request it from SDS team
-        project_id = "ons-sds-jamesb-sandbox"
-        audience = _get_client_id(project_id, key_file)
-        
-        # The URL to access the load balancer on SDS project. Request it from SDS team
-        base_url = "https://35.190.114.159.nip.io"
-    
+        audience = _get_client_id(project_id, service_account_key)
         # Make request to IAP of SDS load balancer
-        response = _make_iap_request(f"{base_url}/v1/schema?survey_id={survey_id}", audience, key_file, schema)
-
+        response = _make_iap_request(f"{base_url}/v1/schema?survey_id={survey_id}", audience, service_account_key, schema)
         return response
-    finally:
-        # ensure temp file is removed after use even if an exception is raised
-        # os.remove("key.json")
-        pass
+    except Exception as e:
+        print(e)
+        return {
+            "status_code": 500,
+            "message": "Internal Server Error"
+        }
  
  
-def _get_client_id(project_id, key_file) -> str:
+def _get_client_id(project_id, service_account_key) -> str:
     """
     Function to get Client ID of OAuth Client on SDS project    
     Require the role OAuth Config Editor & Compute Viewer for the service account used
  
     Parameters:
         project_id(str): The SDS Project ID
-        key_file(str): The Json key file of the service account
+        service_account_key(str): The Json key file of the service account
  
     Returns:
         OAuth Client ID
     """
  
     try:
-        # Set to use the supplied SA as the default configuration to connect gcloud
-        #cmd_auth = "gcloud auth activate-service-account --key-file=" + key_file
-        #subprocess.run(cmd_auth, shell=True)
         # Fetch for the client ID of OAuth Client on SDS
         cmd_get_oauth_brand_name = "gcloud iap oauth-brands list --format='value(name)' --limit=1 --project=" + project_id
         oauth_brand_name = subprocess.check_output(cmd_get_oauth_brand_name, shell=True)
@@ -73,22 +65,19 @@ def _get_client_id(project_id, key_file) -> str:
         oauth_client_name = subprocess.check_output(cmd_get_oauth_client_name, shell=True)
         oauth_client_name = oauth_client_name.decode().strip()
         oauth_client_id = oauth_client_name[oauth_client_name.rfind('/')+1:]
-        # Resume to use original SA stored in GOOGLE_APPLICATION_CREDENTIALS. Uncomment the two lines below if needed
-        #cmd_resume_auth = "gcloud auth activate-service-account --key-file=" + os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
-        #subprocess.run(cmd_resume_auth, shell=True)
         return oauth_client_id
     except subprocess.CalledProcessError as e:
         print(e.output)
         #Raise exception
  
  
-def _generate_headers(audience, key_file) -> dict[str, str]:
+def _generate_headers(audience, service_account_key) -> dict[str, str]:
     """
     Function to create headers for authentication with auth token.
  
     Parameters:
         audience(str): The Client ID of the OAuth client on SDS project
-        key_file(str): The Json key file of the service account
+        service_account_key(str): The Json key file of the service account
  
     Returns:
         dict[str, str]: the headers required for remote authentication.
@@ -98,8 +87,8 @@ def _generate_headers(audience, key_file) -> dict[str, str]:
  
     auth_req = google.auth.transport.requests.Request()
     # convert the key file to a dict
-    key_file = json.loads(key_file)
-    credentials = service_account.IDTokenCredentials.from_service_account_info(key_file, target_audience=audience)
+    service_account_key = json.loads(service_account_key)
+    credentials = service_account.IDTokenCredentials.from_service_account_info(service_account_key, target_audience=audience)
     credentials.refresh(auth_req)
     auth_token = credentials.token
  
@@ -111,14 +100,14 @@ def _generate_headers(audience, key_file) -> dict[str, str]:
     return headers
  
  
-def _make_iap_request(req_url, audience, key_file, data):
+def _make_iap_request(req_url, audience, service_account_key, data):
     """
     Function to make IAP request to SDS
  
     Parameters:
         req_url(str): The full path of the SDS endpoint
         audience(str): The Client ID of the OAuth client on SDS project
-        key_file(str): The Json key file of the service account
+        service_account_key(str): The Json key file of the service account
         data(schema): The schema being published
  
     Returns:
@@ -126,7 +115,7 @@ def _make_iap_request(req_url, audience, key_file, data):
     """
     # Set Headers
  
-    headers = _generate_headers(audience, key_file)
+    headers = _generate_headers(audience, service_account_key)
  
     try:
         response = requests.request(
