@@ -10,7 +10,7 @@
       },
       "identifier": {
         "type": "string",
-        "description": "The unique top-level identifier the identifierdfgdfgdfgdfg. This is the reporting unit reference without the check letter appended.",
+        "description": "The unique top-level identifier the identifierdfgdfg. This is the reporting unit reference without the check letter appended.",
 
         "minLength": 11,
         "pattern": "^[a-zA-Z0-9]+$",
