@@ -27,7 +27,7 @@ jobs:
     - name: Set up GCP credentials
       uses: google-github-actions/auth@v2
       with:
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
+        credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
     - name: Scan and call Python script
       run: |
@@ -63,4 +63,4 @@ jobs:
           echo "No changes in /schemas directory."
         fi
       env:
-        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
