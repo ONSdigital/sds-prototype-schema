@@ -6,7 +6,6 @@ steps:
       - |
         # Target directory for the schemas
         SCHEMA_DIRECTORY=$SCHEMA_DIRECTORY
-        BRANCH_NAME=$BRANCH_NAME
 
         # Initialise the lists
         NEW_SCHEMA_FILEPATHS=()
