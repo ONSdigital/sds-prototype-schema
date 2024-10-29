@@ -12,9 +12,9 @@ ERROR_DIRECTORY=""
 # Loop through new schemas
 for NEW_SCHEMA_FILEPATH in "${NEW_SCHEMA_FILEPATHS[@]}"; do
     # Send a Pub/Sub message with the schema file path
-    gcloud pubsub topics publish ${NEW_SCHEMA_PUBSUB_TOPIC} --message "${NEW_SCHEMA_FILEPATH}"
+    gcloud pubsub topics publish ${NEW_SCHEMA_PUBSUB_TOPIC} --message ("$NEW_SCHEMA_FILEPATH")
 
 # Loop through error directories
 for ERROR_DIRECTORY in "${ERROR_DIRECTORIES[@]}"; do
     # Send a Pub/Sub message with the error directory
-    gcloud pubsub topics publish ${SCHEMA_FAILURE_PUBSUB_TOPIC} --message "${ERROR_DIRECTORY}"
+    gcloud pubsub topics publish ${SCHEMA_FAILURE_PUBSUB_TOPIC} --message ("$ERROR_DIRECTORY")
