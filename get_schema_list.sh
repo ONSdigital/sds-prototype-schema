@@ -2,17 +2,21 @@
 
 # Target directory for the schemas
 SCHEMA_DIRECTORY=$_SCHEMA_DIRECTORY
+REPOSITORY_URL=$_REPOSITORY_URL
 
 # Initialise the lists
 NEW_SCHEMA_FILEPATHS=()
 ERROR_DIRECTORIES=()
 
 # checkout the repository
-git clone $_REPOSITORY_URL /workspace/repo
+git clone ${REPOSITORY_URL} /workspace/repo
 cd /workspace/repo
 
-# Get the list of newly added files in the commit
-NEW_FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD)
+# Get the latest commit SHA
+LATEST_COMMIT=$(git rev-parse HEAD)
+
+# Get the list of newly added files in the latest commit
+NEW_FILES=$(git diff --name-only --diff-filter=A ${LATEST_COMMIT}~1 ${LATEST_COMMIT})
 
 # Filter the files to only include new schemas in the schema_directory
 NEW_SCHEMAS=$(echo "${NEW_FILES}" | grep "^$SCHEMA_DIRECTORY/")
