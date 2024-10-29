@@ -5,7 +5,7 @@ steps:
       - '-c'
       - |
         # Target directory for the schemas
-        SCHEMA_DIRECTORY=$SCHEMA_DIRECTORY
+        SCHEMA_DIRECTORY=$_SCHEMA_DIRECTORY
 
         # Initialise the lists
         NEW_SCHEMA_FILEPATHS=()
@@ -46,8 +46,8 @@ steps:
         # Load the environment variables
         source /workspace/new_schema_filepaths.env
         source /workspace/error_directories.env
-        NEW_SCHEMA_PUBSUB_TOPIC=$NEW_SCHEMA_PUBSUB_TOPIC
-        SCHEMA_FAILURE_PUBSUB_TOPIC=$SCHEMA_FAILURE_PUBSUB_TOPIC
+        NEW_SCHEMA_PUBSUB_TOPIC=$_NEW_SCHEMA_PUBSUB_TOPIC
+        SCHEMA_FAILURE_PUBSUB_TOPIC=$_SCHEMA_FAILURE_PUBSUB_TOPIC
 
         # Print the lists
         echo "NEW_SCHEMA_FILEPATHS: ${NEW_SCHEMA_FILEPATHS[@]}"
