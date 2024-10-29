@@ -1,0 +1,108 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://ons.gov.uk/brs_schema_for_data.schema.json",
+    "title": "BRS Schema for BRS data",
+    "description": "BRS data validation for use with SDS",
+    "schemaSetIdentifier": "8237337",
+    "surveyIdentifier": "122",
+    "schemaVersion": "1",
+    "schemaVersionDate": "01-SEP-2022",
+    "sampleUnitTypeName": "reporting_unit",
+    "sampleUnitKeyName": "identifier",
+    "required": [
+      "reporting_unit"
+    ],
+    "properties": {
+      "reporting_unit": {
+        "type": "object",
+        "default": {},
+        "title": "The reporting_unit Schema",
+        "required": [
+          "runame",
+          "ruaddr1"
+        ],
+        "properties": {
+          "runame": {
+            "type": "string",
+            "default": "",
+            "title": "Reporting Unit Name",
+            "examples": [
+              "Pipes and Maps Ltd"
+            ]
+          },
+          "ruaddr1": {
+            "type": "string",
+            "default": "",
+            "title": "Reporting Unit Address Line 1",
+            "examples": [
+              "111 Under Hill"
+            ]
+          },
+          "ruaddr2": {
+            "type": "string",
+            "default": "",
+            "title": "Reporting Unit Address Line 2",
+            "examples": [
+              "Hobbitton"
+            ]
+          },
+          "ruaddr4": {
+            "type": "string",
+            "default": "",
+            "title": "Reporting Unit Address Line 4",
+            "examples": [
+              "The Shire"
+            ]
+          },
+          "rupostcode": {
+            "type": "string",
+            "default": "",
+            "title": "Reporting Unit Post Code",
+            "examples": [
+              "HO1 1AA"
+            ]
+          },
+          "payeref": {
+            "type": "string",
+            "default": "",
+            "title": "Reporting Unit Pay Reference",
+            "examples": [
+              "123AB456"
+            ]
+          },
+          "busdesc": {
+            "type": "string",
+            "default": "",
+            "title": "Reporting Unit Business Description",
+            "examples": [
+              "Provision of equipment for hobbit adventures"
+            ]
+          }
+        },
+        "examples": [
+          {
+            "runame": "Pipes and Maps Ltd",
+            "ruaddr1": "111 Under Hill",
+            "ruaddr2": "Hobbitton",
+            "ruaddr4": "The Shire",
+            "rupostcode": "HO1 1AA",
+            "payeref": "123AB456",
+            "busdesc": "Provision of equipment for hobbit adventures"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "reporting_unit": {
+          "runame": "Pipes and Maps Ltd",
+          "ruaddr1": "111 Under Hill",
+          "ruaddr2": "Hobbitton",
+          "ruaddr4": "The Shire",
+          "rupostcode": "HO1 1AA",
+          "payeref": "123AB456",
+          "busdesc": "Provision of equipment for hobbit adventures"
+        }
+      }
+    ]
+  }

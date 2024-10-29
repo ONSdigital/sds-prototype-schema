@@ -67,3 +67,6 @@ steps:
           # send a pubsub message with the error directory
           gcloud pubsub topics publish $SCHEMA_FAILURE_PUBSUB_TOPIC --message $ERROR_DIRECTORY
         done
+
+options:
+  logging: CLOUD_LOGGING_ONLY
