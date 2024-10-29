@@ -10,14 +10,14 @@ echo "ERROR_DIRECTORIES: ${ERROR_DIRECTORIES[@]}"
 
 # loop through new schemas
 for NEW_SCHEMA_FILEPATH in "${NEW_SCHEMA_FILEPATHS[@]}"; do
-    echo "Processing new schema: $NEW_SCHEMA_FILEPATH"
+    echo "Processing new schema: ${NEW_SCHEMA_FILEPATH}"
     # send a pubsub message with the schema file path
-    gcloud pubsub topics publish $NEW_SCHEMA_PUBSUB_TOPIC --message $NEW_SCHEMA_FILEPATH
+    gcloud pubsub topics publish $NEW_SCHEMA_PUBSUB_TOPIC --message ${NEW_SCHEMA_FILEPATH}
 done
 
 # loop through error directories
 for ERROR_DIRECTORY in "${ERROR_DIRECTORIES[@]}"; do
-    echo "Error: More than one new schema in directory: $ERROR_DIRECTORY"
+    echo "Error: More than one new schema in directory: ${ERROR_DIRECTORY}"
     # send a pubsub message with the error directory
-    gcloud pubsub topics publish $SCHEMA_FAILURE_PUBSUB_TOPIC --message $ERROR_DIRECTORY
+    gcloud pubsub topics publish $SCHEMA_FAILURE_PUBSUB_TOPIC --message ${ERROR_DIRECTORY}
 done
