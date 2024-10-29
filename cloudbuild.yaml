@@ -15,7 +15,7 @@ steps:
         NEW_FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD)
 
         # Filter the files to only include new schemas in the schema_directory
-        NEW_SCHEMAS=$(echo "$NEW_FILES" | grep "^$SCHEMA_DIRECTORY/")
+        NEW_SCHEMAS=$(echo "${NEW_FILES}" | grep "^$SCHEMA_DIRECTORY/")
 
         # Iterate over each subdirectory in the schema_directory
         for SUBDIR in $(find $SCHEMA_DIRECTORY -mindepth 1 -maxdepth 1 -type d); do
