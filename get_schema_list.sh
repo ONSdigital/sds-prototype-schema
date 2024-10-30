@@ -36,10 +36,16 @@ else
     echo "No previous commit found. Assuming all files in the schema_directory are new."
 fi
 
+# Debugging output to check the contents of NEW_FILES
+echo "NEW_FILES:"
+echo "${NEW_FILES}"
+
 echo "Filtering new files in the schema_directory."
 # Filter the files to only include new schemas in the schema_directory
 NEW_SCHEMAS=$(echo "${NEW_FILES}" | grep schemas/)
-
+# Debugging output to check the contents of NEW_SCHEMAS
+echo "NEW_SCHEMAS:"
+echo "${NEW_SCHEMAS}"
 
 # Iterate over each subdirectory in the schema_directory
 for subdir in $(find "$SCHEMA_DIRECTORY" -mindepth 1 -maxdepth 1 -type d); do
