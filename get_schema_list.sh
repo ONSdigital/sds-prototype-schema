@@ -61,7 +61,12 @@ for subdir in $(find schemas -mindepth 1 -maxdepth 1 -type d); do
         echo "Found multiple new schemas in subdirectory: $subdir. Added to the error list."
     fi
 done
-
+# list the new schema filepaths
+echo "NEW_SCHEMA_FILEPATHS:"
+echo "schema: ${NEW_SCHEMA_FILEPATHS[@]}"
+# list the error directories
+echo "ERROR_DIRECTORIES:"
+echo "error: ${ERROR_DIRECTORIES[@]}"
 # Write the lists to environment variable files
 echo "NEW_SCHEMA_FILEPATHS=${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_filepaths.env
 echo "ERROR_DIRECTORIES=${ERROR_DIRECTORIES[@]}" > /workspace/error_directories.env
