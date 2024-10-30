@@ -9,6 +9,7 @@ NEW_SCHEMA_FILEPATHS=()
 ERROR_DIRECTORIES=()
 
 # checkout the repository
+mkdir -p /workspace/repo
 git clone ${REPOSITORY_URL} /workspace/repo
 cd /workspace/repo
 
