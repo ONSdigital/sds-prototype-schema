@@ -9,11 +9,11 @@ REPOSITORY_NAME=$_REPOSITORY_NAME
 NEW_SCHEMA_FILEPATHS=()
 ERROR_DIRECTORIES=()
 
-# checkout the repository - BRANCH_NAME is a default substituion in Cloud Build
-git clone ${REPOSITORY_URL} /workspace
-# cd into the repository
-cd /workspace
-cd /${REPOSITORY_NAME}
+# # checkout the repository - BRANCH_NAME is a default substituion in Cloud Build
+# git clone https://github.com/ONSdigital/sds-prototype-schema.git /workspace
+# # cd into the repository
+# cd /workspace
+# cd /${REPOSITORY_NAME}
 
 git checkout $BRANCH_NAME
 
