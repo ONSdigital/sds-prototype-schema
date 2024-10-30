@@ -48,7 +48,7 @@ echo "NEW_SCHEMAS:"
 echo "${NEW_SCHEMAS}"
 
 # Iterate over each subdirectory in the schema_directory
-for subdir in $(find "$SCHEMA_DIRECTORY" -mindepth 1 -maxdepth 1 -type d); do
+for subdir in $(find /schemas -mindepth 1 -maxdepth 1 -type d); do
     echo "Checking subdirectory: $subdir"
     # Get the list of new schemas in the subdirectory
     NEW_SCHEMAS_IN_SUBDIR=$(echo "$NEW_SCHEMAS" | grep "^$subdir/")
