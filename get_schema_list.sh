@@ -10,10 +10,12 @@ NEW_SCHEMA_FILEPATHS=()
 ERROR_DIRECTORIES=()
 
 # checkout the repository - BRANCH_NAME is a default substituion in Cloud Build
-git clone -b $BRANCH_NAME ${REPOSITORY_URL} /workspace
+git clone ${REPOSITORY_URL} /workspace
 # cd into the repository
 cd /workspace
 cd /${REPOSITORY_NAME}
+
+git checkout $BRANCH_NAME
 
 # Get the latest commit SHA
 LATEST_COMMIT=$(git rev-parse HEAD)
