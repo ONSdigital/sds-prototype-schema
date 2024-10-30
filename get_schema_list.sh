@@ -22,9 +22,9 @@ NEW_FILES=$(git diff --name-only --diff-filter=A ${LATEST_COMMIT}~1 ${LATEST_COM
 NEW_SCHEMAS=$(echo "${NEW_FILES}" | grep "^$SCHEMA_DIRECTORY/")
 
 # Iterate over each subdirectory in the schema_directory
-for SUBDIR in $(find $SCHEMA_DIRECTORY -mindepth 1 -maxdepth 1 -type d); do
+for subdir in $(find $SCHEMA_DIRECTORY -mindepth 1 -maxdepth 1 -type d); do
     # Get the list of new schemas in the subdirectory
-    NEW_SCHEMAS_IN_SUBDIR=$(echo "$NEW_SCHEMAS" | grep "^$SUBDIR/")
+    NEW_SCHEMAS_IN_SUBDIR=$(echo "$NEW_SCHEMAS" | grep "^$subdir/")
 
     # Count the number of new schemas in the subdirectory
     NUM_NEW_SCHEMAS=$(echo "$NEW_SCHEMAS_IN_SUBDIR" | wc -l)
@@ -34,7 +34,7 @@ for SUBDIR in $(find $SCHEMA_DIRECTORY -mindepth 1 -maxdepth 1 -type d); do
     NEW_SCHEMA_FILEPATHS+=("$NEW_SCHEMAS_IN_SUBDIR")
     elif [ "$NUM_NEW_SCHEMAS" -gt 1 ]; then
     # If there is more than one new schema, add the subdirectory to the ERROR_DIRECTORIES list
-    ERROR_DIRECTORIES+=("$SUBDIR")
+    ERROR_DIRECTORIES+=("$subdir")
     fi
 done
 
