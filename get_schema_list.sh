@@ -38,7 +38,7 @@ fi
 
 echo "Filtering new files in the schema_directory."
 # Filter the files to only include new schemas in the schema_directory
-NEW_SCHEMAS=$(echo "${NEW_FILES}" | grep "^$SCHEMA_DIRECTORY/")
+NEW_SCHEMAS=$(echo "${NEW_FILES}" | grep schemas/)
 
 
 # Iterate over each subdirectory in the schema_directory
