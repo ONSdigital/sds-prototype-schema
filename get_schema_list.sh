@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Target directory for the schemas
-SCHEMA_DIRECTORY=$_SCHEMA_DIRECTORY
-REPOSITORY_URL=$_REPOSITORY_URL
-REPOSITORY_NAME=$_REPOSITORY_NAME
-
 # Initialise the lists
 NEW_SCHEMA_FILEPATHS=()
 ERROR_DIRECTORIES=()
@@ -59,9 +54,11 @@ for subdir in $(find schemas -mindepth 1 -maxdepth 1 -type d); do
     if [ "$NUM_NEW_SCHEMAS" -eq 1 ]; then
         # If there is exactly one new schema, add it to the NEW_SCHEMA_FILEPATHS list
         NEW_SCHEMA_FILEPATHS+=("$NEW_SCHEMAS_IN_SUBDIR")
+        echo "Found new schema: $NEW_SCHEMAS_IN_SUBDIR and added it to the list."
     elif [ "$NUM_NEW_SCHEMAS" -gt 1 ]; then
         # If there is more than one new schema, add the subdirectory to the ERROR_DIRECTORIES list
         ERROR_DIRECTORIES+=("$subdir")
+        echo "Found multiple new schemas in subdirectory: $subdir. Added to the error list."
     fi
 done
 
