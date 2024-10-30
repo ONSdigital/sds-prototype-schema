@@ -13,7 +13,7 @@ ERROR_DIRECTORIES=()
 git clone -b $BRANCH_NAME ${REPOSITORY_URL} /workspace
 # cd into the repository
 cd /workspace
-cd "/"+$REPOSITORY_NAME
+cd /${REPOSITORY_NAME}
 
 # Get the latest commit SHA
 LATEST_COMMIT=$(git rev-parse HEAD)
