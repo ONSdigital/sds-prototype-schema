@@ -9,9 +9,9 @@ NEW_SCHEMA_FILEPATHS=()
 ERROR_DIRECTORIES=()
 
 # checkout the repository
-mkdir -p /workspace/repo
-git clone ${REPOSITORY_URL} /workspace/repo
-cd /workspace/repo
+git clone ${REPOSITORY_URL} /workspace
+# cd into the repository
+cd /workspace
 
 # Get the latest commit SHA
 LATEST_COMMIT=$(git rev-parse HEAD)
