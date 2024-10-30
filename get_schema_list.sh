@@ -41,6 +41,12 @@ NEW_SCHEMAS=$(echo "${NEW_FILES}" | grep schemas/)
 echo "NEW_SCHEMAS:"
 echo "${NEW_SCHEMAS}"
 
+# if there are no new schemas, exit
+if [ -z "$NEW_SCHEMAS" ]; then
+    echo "No new schemas found. Exiting."
+    exit 0
+fi
+
 # Iterate over each subdirectory in the schema_directory
 for subdir in $(find schemas -mindepth 1 -maxdepth 1 -type d); do
     echo "Checking subdirectory: $subdir"
