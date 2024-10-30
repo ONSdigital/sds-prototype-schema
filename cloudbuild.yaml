@@ -7,7 +7,7 @@ steps:
         chmod +x ./get_schema_list.sh
         ./get_schema_list.sh
 
-  - name: 'gcr.io/cloud-builders/bash'
+  - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
       - '-c'

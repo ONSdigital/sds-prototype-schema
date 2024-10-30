@@ -3,15 +3,17 @@
 # Target directory for the schemas
 SCHEMA_DIRECTORY=$_SCHEMA_DIRECTORY
 REPOSITORY_URL=$_REPOSITORY_URL
+REPOSITORY_NAME=$_REPOSITORY_NAME
 
 # Initialise the lists
 NEW_SCHEMA_FILEPATHS=()
 ERROR_DIRECTORIES=()
 
-# checkout the repository
-git clone ${REPOSITORY_URL} /workspace
+# checkout the repository - BRANCH_NAME is a default substituion in Cloud Build
+git clone -b $BRANCH_NAME ${REPOSITORY_URL} /workspace
 # cd into the repository
 cd /workspace
+cd "/"+$REPOSITORY_NAME
 
 # Get the latest commit SHA
 LATEST_COMMIT=$(git rev-parse HEAD)

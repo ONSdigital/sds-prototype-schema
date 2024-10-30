@@ -5,8 +5,6 @@ source /workspace/new_schema_filepaths.env
 source /workspace/error_directories.env
 NEW_SCHEMA_PUBSUB_TOPIC=${_NEW_SCHEMA_PUBSUB_TOPIC}  # Changed to use curly braces
 SCHEMA_FAILURE_PUBSUB_TOPIC=${_SCHEMA_FAILURE_PUBSUB_TOPIC}  # Changed to use curly braces
-new_schema_filepath=""
-error_directory=""
 
 
 # Loop through new schemas
