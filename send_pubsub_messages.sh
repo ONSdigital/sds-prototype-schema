@@ -10,11 +10,11 @@ SCHEMA_FAILURE_PUBSUB_TOPIC=${_SCHEMA_FAILURE_PUBSUB_TOPIC}  # Changed to use cu
 # Loop through new schemas
 for new_schema_filepath in "${NEW_SCHEMA_FILEPATHS[@]}"; do
     # Send a Pub/Sub message with the schema file path
-    gcloud pubsub topics publish ${NEW_SCHEMA_PUBSUB_TOPIC} --message ${new_schema_filepath}
+    gcloud pubsub topics publish schemas-for-publication --message ${new_schema_filepath}
 done
 
 # Loop through error directories
 for error_directory in "${ERROR_DIRECTORIES[@]}"; do
     # Send a Pub/Sub message with the error directory
-    gcloud pubsub topics publish ${SCHEMA_FAILURE_PUBSUB_TOPIC} --message ${error_directory}
+    gcloud pubsub topics publish fail-schema-topic --message ${error_directory}
 done
