@@ -4,13 +4,13 @@
 NEW_SCHEMA_FILEPATHS=()
 ERROR_DIRECTORIES=()
 
-# Navigate to the directory with the repo
+# checkout the repository - BRANCH_NAME is a default substituion in Cloud Build
+# git clone https://github.com/ONSdigital/sds-prototype-schema.git /workspace
+# cd into the repository
 cd /workspace
 
-# Checkout the branch (from default substitution)
 git checkout $BRANCH_NAME
 
-# Fetch the relevant commits
 git fetch --unshallow
 
 # Get the latest commit SHA
@@ -26,8 +26,9 @@ if git rev-parse "${LATEST_COMMIT}~1" >/dev/null 2>&1; then
   NEW_FILES=$(git diff --name-only --diff-filter=A "${LATEST_COMMIT}~1" "${LATEST_COMMIT}")
   echo "Found new files in the latest commit."
 else
-  echo "No previous commit found. Exiting."
-  exit 1
+  # If there is no previous commit, assume all files in the schema_directory are new
+  NEW_FILES=$(find "$SCHEMA_DIRECTORY" -type f)
+    echo "No previous commit found. Assuming all files in the schema_directory are new."
 fi
 
 # Debugging output to check the contents of NEW_FILES
@@ -40,12 +41,6 @@ NEW_SCHEMAS=$(echo "${NEW_FILES}" | grep schemas/)
 # Debugging output to check the contents of NEW_SCHEMAS
 echo "NEW_SCHEMAS:"
 echo "${NEW_SCHEMAS}"
-
-# if there are no new schemas, exit
-if [ -z "$NEW_SCHEMAS" ]; then
-    echo "No new schemas found. Exiting."
-    exit 0
-fi
 
 # Iterate over each subdirectory in the schema_directory
 for subdir in $(find schemas -mindepth 1 -maxdepth 1 -type d); do
@@ -66,8 +61,13 @@ for subdir in $(find schemas -mindepth 1 -maxdepth 1 -type d); do
         echo "Found multiple new schemas in subdirectory: $subdir. Added to the error list."
     fi
 done
-
-# Write the lists to environment variable files with correct permissions
+# list the new schema filepaths
+echo "NEW_SCHEMA_FILEPATHS:"
+echo "schema: ${NEW_SCHEMA_FILEPATHS[@]}"
+# list the error directories
+echo "ERROR_DIRECTORIES:"
+echo "error: ${ERROR_DIRECTORIES[@]}"
+# Write the lists to environment variable files
 echo "NEW_SCHEMA_FILEPATHS=${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_filepaths.env
 chmod 644 /workspace/new_schema_filepaths.env
 echo "ERROR_DIRECTORIES=${ERROR_DIRECTORIES[@]}" > /workspace/error_directories.env
