@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+chmod 644 /workspace/new_schema_filepaths.env
+chmod 644 /workspace/error_directories.env
 # Load the environment variables
 source /workspace/new_schema_filepaths.env
 source /workspace/error_directories.env
