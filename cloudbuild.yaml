@@ -12,6 +12,8 @@ steps:
     args:
       - '-c'
       - |
+        chmod +r /workspace/new_schema_filepaths.env
+        chmod +r /workspace/error_directories.env
         chmod +x ./send_pubsub_messages.sh
         ./send_pubsub_messages.sh
 

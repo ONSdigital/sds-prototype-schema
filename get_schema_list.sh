@@ -67,7 +67,7 @@ for subdir in $(find schemas -mindepth 1 -maxdepth 1 -type d); do
     fi
 done
 
-# Write the lists to environment variable files and set the permissions
+# Write the lists to environment variable files with correct permissions
 echo "NEW_SCHEMA_FILEPATHS=${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_filepaths.env
 chmod 644 /workspace/new_schema_filepaths.env
 echo "ERROR_DIRECTORIES=${ERROR_DIRECTORIES[@]}" > /workspace/error_directories.env
