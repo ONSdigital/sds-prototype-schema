@@ -1,4 +1,30 @@
 steps:
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: "Retrieve `OAUTH_BRAND_NAME` and save it to workspace"
+    entrypoint: sh
+    args:
+      - "-c"
+      - |
+        gcloud iap oauth-brands list --format='value(name)' --limit=1 --project=${PROJECT_ID} \
+        > /workspace/oauth_brand_name
+
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: "Retrieve `OAUTH_CLIENT_NAME` and save it to workspace"
+    entrypoint: sh
+    args:
+      - "-c"
+      - |
+        gcloud iap oauth-clients list $(cat /workspace/oauth_brand_name) --format='value(name)' \
+        --limit=1 \
+        > /workspace/oauth_client_name
+
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: "Store `OAUTH_CLIENT_NAME` in secret manager"
+    entrypoint: sh
+    args:
+      - "-c"
+      - |
+        gcloud secrets versions add oauth-client-name --data-file=/workspace/oauth_client_name
   - name: 'gcr.io/cloud-builders/git'
     entrypoint: 'bash'
     args:
