@@ -26,11 +26,14 @@ else
   exit 0
 fi
 
-if NEW_FILES=$(git diff --name-only --diff-filter=A "${LATEST_COMMIT}~1" "${LATEST_COMMIT}"); then
-    echo "Found new files in the latest commit."
+NEW_FILES=$(git diff --name-only --diff-filter=A "${LATEST_COMMIT}~1" "${LATEST_COMMIT}")
+
+# Check if there are new files in the latest commit
+if [ -z "$NEW_FILES" ]; then
+  echo "No new files found in the latest commit."
+  exit 0
 else
-    echo "No new files found in the latest commit."
-    exit 0
+  echo "Found new files in the latest commit."
 fi
 
 # Convert NEW_FILES to an array
