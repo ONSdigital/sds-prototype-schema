@@ -1,19 +1,14 @@
 #!/bin/bash
 
-# Target directory for the schemas
-SCHEMA_DIRECTORY="schemas/"
-
 # Initialise the lists
 NEW_SCHEMA_FILEPATHS=()
 ERROR_DIRECTORIES=()
 
 # cd into the repository
-cd /workspace || exit
+cd /workspace
 
-# Ensure we are on the correct branch (e.g., main)
 git checkout $BRANCH_NAME
 
-# Fetch all history to ensure we have previous commits
 git fetch --unshallow
 
 # Get the latest commit SHA
@@ -31,7 +26,7 @@ if git rev-parse "${LATEST_COMMIT}~1" >/dev/null 2>&1; then
 else
   # If there is no previous commit, assume all files in the schema_directory are new
   NEW_FILES=$(find "$SCHEMA_DIRECTORY" -type f)
-  echo "No previous commit found. Assuming all files in the schema_directory are new."
+    echo "No previous commit found. Assuming all files in the schema_directory are new."
 fi
 
 # Debugging output to check the contents of NEW_FILES
@@ -40,45 +35,36 @@ echo "${NEW_FILES}"
 
 echo "Filtering new files in the schema_directory."
 # Filter the files to only include new schemas in the schema_directory
-NEW_SCHEMAS=$(echo "${NEW_FILES}" | grep "^${SCHEMA_DIRECTORY}/")
+NEW_SCHEMAS=$(echo "${NEW_FILES}" | grep schemas/)
 # Debugging output to check the contents of NEW_SCHEMAS
 echo "NEW_SCHEMAS:"
 echo "${NEW_SCHEMAS}"
 
 # Iterate over each subdirectory in the schema_directory
-for subdir in $(find "$SCHEMA_DIRECTORY" -mindepth 1 -maxdepth 1 -type d); do
+for subdir in $(find schemas -mindepth 1 -maxdepth 1 -type d); do
     echo "Checking subdirectory: $subdir"
     # Get the list of new schemas in the subdirectory
     NEW_SCHEMAS_IN_SUBDIR=$(echo "$NEW_SCHEMAS" | grep "^$subdir/")
-
-    # Debugging output to check the contents of NEW_SCHEMAS_IN_SUBDIR
-    echo "NEW_SCHEMAS_IN_SUBDIR:"
-    echo "${NEW_SCHEMAS_IN_SUBDIR}"
 
     # Count the number of new schemas in the subdirectory
     NUM_NEW_SCHEMAS=$(echo "$NEW_SCHEMAS_IN_SUBDIR" | wc -l)
 
     if [ "$NUM_NEW_SCHEMAS" -eq 1 ]; then
         # If there is exactly one new schema, add it to the NEW_SCHEMA_FILEPATHS list
-        if [ -n "$NEW_SCHEMAS_IN_SUBDIR" ]; then
-            NEW_SCHEMA_FILEPATHS+=("$NEW_SCHEMAS_IN_SUBDIR")
-            echo "Found new schema: $NEW_SCHEMAS_IN_SUBDIR and added it to the list."
-        fi
+        NEW_SCHEMA_FILEPATHS+=("$NEW_SCHEMAS_IN_SUBDIR")
+        echo "Found new schema: $NEW_SCHEMAS_IN_SUBDIR and added it to the list."
     elif [ "$NUM_NEW_SCHEMAS" -gt 1 ]; then
         # If there is more than one new schema, add the subdirectory to the ERROR_DIRECTORIES list
         ERROR_DIRECTORIES+=("$subdir")
         echo "Found multiple new schemas in subdirectory: $subdir. Added to the error list."
     fi
 done
-
-# List the new schema filepaths
+# list the new schema filepaths
 echo "NEW_SCHEMA_FILEPATHS:"
-echo "${NEW_SCHEMA_FILEPATHS[@]}"
-
-# List the error directories
+echo "schema: ${NEW_SCHEMA_FILEPATHS[@]}"
+# list the error directories
 echo "ERROR_DIRECTORIES:"
-echo "${ERROR_DIRECTORIES[@]}"
-
+echo "error: ${ERROR_DIRECTORIES[@]}"
 # Write the lists to environment variable files
 echo "NEW_SCHEMA_FILEPATHS=${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_filepaths.env
 chmod 644 /workspace/new_schema_filepaths.env
