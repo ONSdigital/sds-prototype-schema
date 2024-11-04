@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Initialise the lists
+# Get last commit hash from previous time the script was run
+source /workspace/last_commit_hash.env
+
+# Initialise the empty lists
 NEW_SCHEMA_FILEPATHS=()
 ERROR_DIRECTORIES=()
 
@@ -18,15 +21,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# Check if there is a previous commit
-if git rev-parse "${LATEST_COMMIT}~1" >/dev/null 2>&1; then
-  echo "Found latest commit."
-else
-  echo "No previous commit found. Exiting."
-  exit 0
-fi
-
-NEW_FILES=$(git diff --name-only --diff-filter=A "${LATEST_COMMIT}~1" "${LATEST_COMMIT}")
+NEW_FILES=$(git diff --name-only --diff-filter=A "$LAST_COMMIT_HASH" "$LATEST_COMMIT")
 
 # Check if there are new files in the latest commit
 if [ -z "$NEW_FILES" ]; then
@@ -66,6 +61,8 @@ echo "NEW_SCHEMA_FILEPATHS=${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_f
 chmod 644 /workspace/new_schema_filepaths.env
 echo "ERROR_DIRECTORIES=${ERROR_DIRECTORIES[@]}" > /workspace/error_directories.env
 chmod 644 /workspace/error_directories.env
+echo "LATEST_COMMIT=${LATEST_COMMIT}" > /workspace/latest_commit_hash.env
+chmod 644 /workspace/latest_commit.env
 
 sleep 5
 
