@@ -38,6 +38,10 @@ fi
 # Convert NEW_FILES to an array
 IFS=$'\n' read -r -d '' -a NEW_FILES_ARRAY <<< "$NEW_FILES"
 
+for file in "${NEW_FILES_ARRAY[@]}"; do
+    echo "New file: $file"
+done
+
 SCHEMA_LIST=()
 # Filter the list of new files to only include schema files
 for file in "${NEW_FILES_ARRAY[@]}"; do
