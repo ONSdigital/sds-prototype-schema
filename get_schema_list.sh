@@ -56,7 +56,7 @@ for schema in "${SCHEMA_LIST[@]}"; do
     # Get the subdirectory of the schema file
     subdirectory=$(dirname "$schema")
     # Get the number of new files in the subdirectory
-    num_files=$(git diff --name-only --diff-filter=A "${LATEST_COMMIT}~1" "${LATEST_COMMIT}" "$subdirectory" | wc -l)
+    num_files=$(git diff --name-only --diff-filter=A "$LAST_COMMIT_HASH" "$LATEST_COMMIT" "$subdirectory" | wc -l)
     if [ $num_files -eq 1 ]; then
         NEW_SCHEMA_FILEPATHS+=("$schema")
     else
