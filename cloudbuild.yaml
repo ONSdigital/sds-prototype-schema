@@ -1,35 +1,36 @@
 steps:
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'Get last commit for comparison'
-    entrypoint: 'bash'
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: "Get last commit for comparison"
+    entrypoint: "bash"
     args:
-      - '-c'
+      - "-c"
       - |
+        touch workspace/last_commit_hash.env
         gcloud secrets versions access latest --secret=schema-publish-commit-hash > workspace/last_commit_hash.env
 
-  - name: 'gcr.io/cloud-builders/git'
-    id: 'Get schema list'
-    entrypoint: 'bash'
+  - name: "gcr.io/cloud-builders/git"
+    id: "Get schema list"
+    entrypoint: "bash"
     args:
-      - '-c'
+      - "-c"
       - |
         chmod +x ./get_schema_list.sh
         ./get_schema_list.sh
 
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'Send PubSub messages'
-    entrypoint: 'bash'
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: "Send PubSub messages"
+    entrypoint: "bash"
     args:
-      - '-c'
+      - "-c"
       - |
         chmod +x ./send_pubsub_messages.sh
         ./send_pubsub_messages.sh
 
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'Store commit hash in Secret Manager'
-    entrypoint: 'bash'
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: "Store commit hash in Secret Manager"
+    entrypoint: "bash"
     args:
-      - '-c'
+      - "-c"
       - |
         gcloud secrets versions add schema-publish-commit-hash --data-file=workspace/latest_commit_hash.env
 
