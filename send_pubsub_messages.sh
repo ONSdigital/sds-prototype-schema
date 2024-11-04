@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Load the environment variables
-source /workspace/new_schema_filepaths.env
+mapfile -t NEW_SCHEMA_FILEPATHS < /workspace/new_schema_filepaths.env
 # source /workspace/error_directories.env
 NEW_SCHEMA_PUBSUB_TOPIC=${_NEW_SCHEMA_PUBSUB_TOPIC}
 SCHEMA_FAILURE_PUBSUB_TOPIC=${_SCHEMA_FAILURE_PUBSUB_TOPIC}

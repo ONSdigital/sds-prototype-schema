@@ -64,8 +64,8 @@ for schema in "${SCHEMA_LIST[@]}"; do
     fi
 done
 
-# Write the lists to environment variable files
-echo "NEW_SCHEMA_FILEPATHS=${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_filepaths.env
+# Write the lists to environment variable files, each element on a new line
+printf "%s\n" "${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_filepaths.env
 chmod 644 /workspace/new_schema_filepaths.env
 echo "ERROR_DIRECTORIES=${ERROR_DIRECTORIES[@]}" > /workspace/error_directories.env
 chmod 644 /workspace/error_directories.env
@@ -79,5 +79,7 @@ done
 
 echo "Error directories:"
 for error_directory in "${ERROR_DIRECTORIES[@]}"; do
+    if [ -z "$error_directory" ]; then
+      continue
     echo "Error directory: $error_directory"
 done
