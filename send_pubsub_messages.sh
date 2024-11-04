@@ -2,15 +2,13 @@
 
 # Load the environment variables
 mapfile -t NEW_SCHEMA_FILEPATHS < /workspace/new_schema_filepaths.env
+NEW_SCHEMA_FILEPATHS=("${NEW_SCHEMA_FILEPATHS[@]}")
 # source /workspace/error_directories.env
 NEW_SCHEMA_PUBSUB_TOPIC=${_NEW_SCHEMA_PUBSUB_TOPIC}
 SCHEMA_FAILURE_PUBSUB_TOPIC=${_SCHEMA_FAILURE_PUBSUB_TOPIC}
 
-# Convert NEW_SCHEMA_FILEPATHS to an array
-IFS=$' ' read -r -d '' -a NEW_SCHEMA_FILEPATHS <<< "$NEW_SCHEMA_FILEPATHS"
-
 # if there are no new schemas, skip
-if [ -z "$NEW_SCHEMA_FILEPATHS" ]; then
+if [ ${#NEW_SCHEMA_FILEPATHS[@]} -eq 0 ]; then
     echo "Not sending any Pub/Sub messages."
     exit 0
 fi
