@@ -24,21 +24,19 @@ if git rev-parse "${LATEST_COMMIT}~1" >/dev/null 2>&1; then
   NEW_FILES=$(git diff --name-only --diff-filter=A "${LATEST_COMMIT}~1" "${LATEST_COMMIT}")
   echo "Found new files in the latest commit."
 else
-  # If there is no previous commit, assume all files in the schema_directory are new
-  NEW_FILES=$(find "$SCHEMA_DIRECTORY" -type f)
-    echo "No previous commit found. Assuming all files in the schema_directory are new."
+  echo "No previous commit found. Exiting."
+  exit 0
 fi
 
-# Debugging output to check the contents of NEW_FILES
-echo "NEW_FILES:"
-echo "${NEW_FILES}"
 
 echo "Filtering new files in the schema_directory."
 # Filter the files to only include new schemas in the schema_directory
 NEW_SCHEMAS=$(echo "${NEW_FILES}" | grep schemas/)
-# Debugging output to check the contents of NEW_SCHEMAS
-echo "NEW_SCHEMAS:"
-echo "${NEW_SCHEMAS}"
+# if there are no new schemas, exit
+if [ -z "$NEW_SCHEMAS" ]; then
+    echo "No new schemas found. Exiting."
+    exit 0
+fi
 
 # Iterate over each subdirectory in the schema_directory
 for subdir in $(find schemas -mindepth 1 -maxdepth 1 -type d); do
