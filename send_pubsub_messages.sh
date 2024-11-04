@@ -13,17 +13,11 @@ if [ ${#NEW_SCHEMA_FILEPATHS[@]} -eq 0 ]; then
     exit 0
 fi
 
-for schema in "${NEW_SCHEMA_FILEPATHS[@]}"; do
-    echo "New schema: $schema"
-done
-
-# Loop through new schemas
+# Loop through new schemas - ensuring that the filepath is not empty
 for new_schema_filepath in "${NEW_SCHEMA_FILEPATHS[@]}"; do
     if [ -n "$new_schema_filepath" ]; then
         echo "New schema: $new_schema_filepath"
         # Send a Pub/Sub message with the schema file path
         gcloud pubsub topics publish schemas-for-publication --message ${new_schema_filepath}
-    else
-        echo "Skipping empty schema filepath"
     fi
 done
