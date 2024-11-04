@@ -39,22 +39,17 @@ fi
 # Convert NEW_FILES to an array
 IFS=$'\n' read -r -d '' -a NEW_FILES_ARRAY <<< "$NEW_FILES"
 
-schema_list=()
+SCHEMA_LIST=()
 # Filter the list of new files to only include schema files
 for file in "${NEW_FILES_ARRAY[@]}"; do
     if [[ "$file" == "schemas/"* ]]; then
-        # add the file to schema_list array
-        schema_list+=("$file")
+        # add the file to SCHEMA_LIST array
+        SCHEMA_LIST+=("$file")
     fi
 done
 
-echo "Schema list:"
-for schema in "${schema_list[@]}"; do
-    echo "Schema path: $schema"
-done
-
 # Add the schema files to the NEW_SCHEMA_FILEPATHS list if the subdirectory only contains 1 new file
-for schema in "${schema_list[@]}"; do
+for schema in "${SCHEMA_LIST[@]}"; do
     # Get the subdirectory of the schema file
     subdirectory=$(dirname "$schema")
     # Get the number of new files in the subdirectory
@@ -71,3 +66,10 @@ echo "NEW_SCHEMA_FILEPATHS=${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_f
 chmod 644 /workspace/new_schema_filepaths.env
 echo "ERROR_DIRECTORIES=${ERROR_DIRECTORIES[@]}" > /workspace/error_directories.env
 chmod 644 /workspace/error_directories.env
+
+sleep 5
+
+echo "New schema filepaths:"
+for new_schema_filepath in "${NEW_SCHEMA_FILEPATHS[@]}"; do
+    echo "New schema: $new_schema_filepath"
+done
