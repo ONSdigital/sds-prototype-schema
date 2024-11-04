@@ -64,14 +64,8 @@ for schema in "${SCHEMA_LIST[@]}"; do
     fi
 done
 
-# append all items in the NEW_SCHEMAS_FILEPATHS to a string with a space separator
-NEW_SCHEMA_FILEPATHS=$(printf " %s" "${NEW_SCHEMA_FILEPATHS[@]}")
-# append all items in the ERROR_DIRECTORIES to a string with a space separator
-ERROR_DIRECTORIES=$(printf " %s" "${ERROR_DIRECTORIES[@]}")
-
-
 # Write the lists to environment variable files
-echo "NEW_SCHEMA_FILEPATHS=${NEW_SCHEMA_FILEPATHS}" > /workspace/new_schema_filepaths.env
+printf "%s\n" "${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_filepaths.env
 chmod 644 /workspace/new_schema_filepaths.env
 echo "ERROR_DIRECTORIES=${ERROR_DIRECTORIES}" > /workspace/error_directories.env
 chmod 644 /workspace/error_directories.env
