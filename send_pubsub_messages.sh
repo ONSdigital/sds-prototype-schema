@@ -15,6 +15,10 @@ if [ -z "$NEW_SCHEMA_FILEPATHS" ]; then
     exit 0
 fi
 
+for schema in "${NEW_SCHEMA_FILEPATHS[@]}"; do
+    echo "New schema: $schema"
+done
+
 # Loop through new schemas
 for new_schema_filepath in "${NEW_SCHEMA_FILEPATHS[@]}"; do
     # Send a Pub/Sub message with the schema file path
