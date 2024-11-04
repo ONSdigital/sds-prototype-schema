@@ -73,3 +73,8 @@ echo "New schema filepaths:"
 for new_schema_filepath in "${NEW_SCHEMA_FILEPATHS[@]}"; do
     echo "New schema: $new_schema_filepath"
 done
+
+echo "Error directories:"
+for error_directory in "${ERROR_DIRECTORIES[@]}"; do
+    echo "Error directory: $error_directory"
+done
