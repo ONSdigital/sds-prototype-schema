@@ -35,7 +35,7 @@ for file in "${NEW_FILES_ARRAY[@]}"; do
     echo "New file: $file"
 done
 
-schema_list = ()
+schema_list=()
 # Filter the list of new files to only include schema files
 for file in "${NEW_FILES_ARRAY[@]}"; do
     if [[ "$file" == "schemas/"* ]]; then
