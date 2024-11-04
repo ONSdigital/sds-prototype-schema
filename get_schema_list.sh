@@ -61,8 +61,8 @@ echo "NEW_SCHEMA_FILEPATHS=${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_f
 chmod 644 /workspace/new_schema_filepaths.env
 echo "ERROR_DIRECTORIES=${ERROR_DIRECTORIES[@]}" > /workspace/error_directories.env
 chmod 644 /workspace/error_directories.env
-echo "LATEST_COMMIT=${LATEST_COMMIT}" > /workspace/latest_commit_hash.env
-chmod 644 /workspace/latest_commit.env
+echo ${LATEST_COMMIT} > /workspace/latest_commit_hash.env
+chmod 644 /workspace/latest_commit_hash.env
 
 sleep 5
 
