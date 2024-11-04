@@ -2,7 +2,7 @@
 
 # Load the environment variables
 source /workspace/new_schema_filepaths.env
-source /workspace/error_directories.env
+# source /workspace/error_directories.env
 NEW_SCHEMA_PUBSUB_TOPIC=${_NEW_SCHEMA_PUBSUB_TOPIC}
 SCHEMA_FAILURE_PUBSUB_TOPIC=${_SCHEMA_FAILURE_PUBSUB_TOPIC}
 
@@ -18,11 +18,11 @@ for new_schema_filepath in "${NEW_SCHEMA_FILEPATHS[@]}"; do
 done
 
 # Loop through error directories
-for error_directory in "${ERROR_DIRECTORIES[@]}"; do
-    # if error directory is empty, skip
-    if [ -z "$error_directory" ]; then
-        continue
-    fi
-    # Send a Pub/Sub message with the error directory
-    gcloud pubsub topics publish fail-schema-topic --message ${error_directory}
-done
+# for error_directory in "${ERROR_DIRECTORIES[@]}"; do
+#     # if error directory is empty, skip
+#     if [ -z "$error_directory" ]; then
+#         continue
+#     fi
+#     # Send a Pub/Sub message with the error directory
+#     gcloud pubsub topics publish fail-schema-topic --message ${error_directory}
+# done
