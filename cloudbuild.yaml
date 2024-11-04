@@ -6,6 +6,7 @@ steps:
       - "-c"
       - |
         gcloud secrets versions access latest --secret=schema-publish-commit-hash > /workspace/last_commit_hash.env
+        echo "LAST_COMMIT_HASH=$(cat /workspace/last_commit_hash.env)" > /workspace/last_commit_hash.env
 
   - name: "gcr.io/cloud-builders/git"
     id: "Get schema list"
