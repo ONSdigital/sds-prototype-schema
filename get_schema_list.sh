@@ -1,13 +1,7 @@
 #!/bin/bash
 
-# Ensure required environment variables are set
-if [ -z "$_SCHEMA_DIRECTORY" ]; then
-  echo "SCHEMA_DIRECTORY is not set. Exiting."
-  exit 1
-fi
-
 # Target directory for the schemas
-SCHEMA_DIRECTORY=$_SCHEMA_DIRECTORY
+SCHEMA_DIRECTORY="schemas/"
 
 # Initialise the lists
 NEW_SCHEMA_FILEPATHS=()
