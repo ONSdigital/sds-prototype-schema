@@ -5,8 +5,7 @@ steps:
     args:
       - "-c"
       - |
-        touch workspace/last_commit_hash.env
-        gcloud secrets versions access latest --secret=schema-publish-commit-hash > workspace/last_commit_hash.env
+        gcloud secrets versions access latest --secret=schema-publish-commit-hash > /workspace/last_commit_hash.env
 
   - name: "gcr.io/cloud-builders/git"
     id: "Get schema list"
@@ -32,7 +31,7 @@ steps:
     args:
       - "-c"
       - |
-        gcloud secrets versions add schema-publish-commit-hash --data-file=workspace/latest_commit_hash.env
+        gcloud secrets versions add schema-publish-commit-hash --data-file=/workspace/latest_commit_hash.env
 
 options:
   logging: CLOUD_LOGGING_ONLY
