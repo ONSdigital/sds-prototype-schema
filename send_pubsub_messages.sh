@@ -15,6 +15,10 @@ done
 
 # Loop through error directories
 for error_directory in "${ERROR_DIRECTORIES[@]}"; do
+    # if error directory is empty, skip
+    if [ -z "$error_directory" ]; then
+        continue
+    fi
     # Send a Pub/Sub message with the error directory
     gcloud pubsub topics publish fail-schema-topic --message ${error_directory}
 done
