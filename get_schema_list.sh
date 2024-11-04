@@ -72,3 +72,7 @@ echo "NEW_SCHEMA_FILEPATHS=${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_f
 chmod 644 /workspace/new_schema_filepaths.env
 echo "ERROR_DIRECTORIES=${ERROR_DIRECTORIES[@]}" > /workspace/error_directories.env
 chmod 644 /workspace/error_directories.env
+
+for new_schema_filepath in "${NEW_SCHEMA_FILEPATHS[@]}"; do
+    echo "New schema: $new_schema_filepath"
+done
