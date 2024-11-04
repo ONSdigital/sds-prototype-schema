@@ -20,12 +20,17 @@ fi
 
 # Check if there is a previous commit
 if git rev-parse "${LATEST_COMMIT}~1" >/dev/null 2>&1; then
-  # Get the list of newly added files in the latest commit
-  NEW_FILES=$(git diff --name-only --diff-filter=A "${LATEST_COMMIT}~1" "${LATEST_COMMIT}")
-  echo "Found new files in the latest commit."
+  echo "Found latest commit."
 else
   echo "No previous commit found. Exiting."
   exit 0
+fi
+
+if NEW_FILES=$(git diff --name-only --diff-filter=A "${LATEST_COMMIT}~1" "${LATEST_COMMIT}"); then
+    echo "Found new files in the latest commit."
+else
+    echo "No new files found in the latest commit."
+    exit 0
 fi
 
 # Convert NEW_FILES to an array
