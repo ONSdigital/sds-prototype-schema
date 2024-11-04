@@ -21,6 +21,10 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# Write the latest commit hash to an environment variable file
+echo ${LATEST_COMMIT} > /workspace/latest_commit_hash.env
+chmod 644 /workspace/latest_commit_hash.env
+
 NEW_FILES=$(git diff --name-only --diff-filter=A "$LAST_COMMIT_HASH" "$LATEST_COMMIT")
 
 # Check if there are new files in the latest commit
@@ -61,8 +65,6 @@ echo "NEW_SCHEMA_FILEPATHS=${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_f
 chmod 644 /workspace/new_schema_filepaths.env
 echo "ERROR_DIRECTORIES=${ERROR_DIRECTORIES[@]}" > /workspace/error_directories.env
 chmod 644 /workspace/error_directories.env
-echo ${LATEST_COMMIT} > /workspace/latest_commit_hash.env
-chmod 644 /workspace/latest_commit_hash.env
 
 sleep 5
 
