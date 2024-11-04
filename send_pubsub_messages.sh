@@ -9,23 +9,14 @@ SCHEMA_FAILURE_PUBSUB_TOPIC=${_SCHEMA_FAILURE_PUBSUB_TOPIC}
 # Convert NEW_SCHEMA_FILEPATHS to an array
 IFS=$' ' read -r -d '' -a NEW_SCHEMA_FILEPATHS <<< "$NEW_SCHEMA_FILEPATHS"
 
+# if there are no new schemas, skip
+if [ -z "$NEW_SCHEMA_FILEPATHS" ]; then
+    echo "Not sending any Pub/Sub messages."
+    exit 0
+fi
 
 # Loop through new schemas
 for new_schema_filepath in "${NEW_SCHEMA_FILEPATHS[@]}"; do
-    # if error directory is empty, skip
-        if [ -z "$new_schema_filepath" ]; then
-            continue
-        fi
     # Send a Pub/Sub message with the schema file path
     gcloud pubsub topics publish schemas-for-publication --message ${new_schema_filepath}
 done
-
-# Loop through error directories
-# for error_directory in "${ERROR_DIRECTORIES[@]}"; do
-#     # if error directory is empty, skip
-#     if [ -z "$error_directory" ]; then
-#         continue
-#     fi
-#     # Send a Pub/Sub message with the error directory
-#     gcloud pubsub topics publish fail-schema-topic --message ${error_directory}
-# done
