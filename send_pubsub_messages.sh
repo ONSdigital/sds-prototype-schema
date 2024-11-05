@@ -37,15 +37,3 @@ if [ -f /workspace/error_directories.env ]; then
 else
     echo "No error directories found. Not sending any Pub/Sub messages."
 fi
-
-
-
-# # if there are no new schemas, skip
-# if [ ${#NEW_SCHEMA_FILEPATHS[@]} -eq 0 ]; then
-#     echo "Not sending any Pub/Sub messages."
-#     exit 0
-# fi
-
-
-
-
