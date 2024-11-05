@@ -60,15 +60,17 @@ for schema in "${SCHEMA_LIST[@]}"; do
     fi
 done
 
-# Write the lists to environment variable files
-# Ensure no empty elements are written to the file
+# Write the lists to environment variable files, ensuring no empty elements are written
 if [ ${#NEW_SCHEMA_FILEPATHS[@]} -gt 0 ]; then
     printf "%s\n" "${NEW_SCHEMA_FILEPATHS[@]}" > /workspace/new_schema_filepaths.env
     chmod 644 /workspace/new_schema_filepaths.env
 fi
-chmod 644 /workspace/new_schema_filepaths.env
-echo "ERROR_DIRECTORIES=${ERROR_DIRECTORIES}" > /workspace/error_directories.env
-chmod 644 /workspace/error_directories.env
+
+# Ensure no empty elements are written to the file
+if [ ${#ERROR_DIRECTORIES[@]} -gt 0 ]; then
+    printf "%s\n" "${ERROR_DIRECTORIES[@]}" > /workspace/error_directories.env
+    chmod 644 /workspace/error_directories.env
+fi
 
 sleep 5
 
