@@ -5,13 +5,13 @@
     "type": "object",
     "properties": {
       "schema_version": {
-        "const": "v1",
+        "const": "v2",
         "description": "Version of the schema spec"
       },
       "survey_id": {
         "type": "string",
         "description": "The identifier for a particular survey",
-        "enum": ["3"]
+        "enum": ["2"]
       },
       "identifier": {
         "type": "string",
