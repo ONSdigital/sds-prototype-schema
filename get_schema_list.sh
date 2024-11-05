@@ -91,3 +91,10 @@ echo "New schema filepaths:"
 for new_schema_filepath in "${NEW_SCHEMA_FILEPATHS[@]}"; do
     echo "New schema: $new_schema_filepath"
 done
+
+if [ ${#ERROR_DIRECTORIES[@]} -gt 0 ]; then
+    echo "ERROR! There has been multiple schema versions added for these surveys:"
+    for error_directory in "${ERROR_DIRECTORIES[@]}"; do
+        echo "Error directory: $error_directory"
+    done
+fi
