@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# Function to check if an element is in an array
+element_in_array() {
+  local element
+  for element in "${@:2}"; do
+    if [[ "$element" == "$1" ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
 # Get last commit hash from previous time the script was run
 source /workspace/last_commit_hash.env
 
@@ -47,7 +58,7 @@ for file in "${NEW_FILES_ARRAY[@]}"; do
     fi
 done
 
-# Add the schema files to the NEW_SCHEMA_FILEPATHS list if the subdirectory only contains 1 new file
+# Add the schema files to the NEW_SCHEMA_FILEPATHS list if the subdirectory only contains 1 new file, otherwise add the subdirectory to the ERROR_DIRECTORIES list
 for schema in "${SCHEMA_LIST[@]}"; do
     # Get the subdirectory of the schema file
     subdirectory=$(dirname "$schema")
@@ -56,7 +67,9 @@ for schema in "${SCHEMA_LIST[@]}"; do
     if [ $num_files -eq 1 ]; then
         NEW_SCHEMA_FILEPATHS+=("$schema")
     else
-        ERROR_DIRECTORIES+=("$subdirectory")
+        if ! element_in_array "$subdirectory" "${ERROR_DIRECTORIES[@]}"; then
+          ERROR_DIRECTORIES+=("$subdirectory")
+        fi
     fi
 done
 
