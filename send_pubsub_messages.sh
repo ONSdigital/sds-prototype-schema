@@ -29,7 +29,7 @@ if [ -f /workspace/error_directories.env ]; then
     # Loop through error directories - ensuring that the directory is not empty
     for error_directory in "${ERROR_DIRECTORIES[@]}"; do
         if [ -n "$error_directory" ]; then
-            echo "Sending message for: $error_directory"
+            echo "Sending error message for: $error_directory"
             # Send a Pub/Sub message with the error directory
             gcloud pubsub topics publish fail-schema-topic --message ${error_directory}
         fi
