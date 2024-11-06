@@ -27,7 +27,7 @@ steps:
         ./send_pubsub_messages.sh
 
   - name: "gcr.io/cloud-builders/gcloud"
-    id: "Store commit hash in Secret Manager"
+    id: "Store current commit hash in Secret Manager"
     entrypoint: "bash"
     args:
       - "-c"
