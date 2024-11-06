@@ -1,0 +1,108 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "v1.json",
+    "title": "SDS schema for survey 3",
+    "type": "object",
+    "properties": {
+      "schema_version": {
+        "const": "v1",
+        "description": "Version of the schema spec"
+      },
+      "survey_id": {
+        "type": "string",
+        "description": "The identifier for a particular survey",
+        "enum": ["3"]
+      },
+      "identifier": {
+        "type": "string",
+        "description": "The unique top-level identifier. This is the reporting unit reference without the check letter appended.",
+        "minLength": 11,
+        "pattern": "^[a-zA-Z0-9]+$",
+        "examples": ["34942807969"]
+      },
+      "vat": {
+        "type": "object",
+        "description": "The VAT reference number of the business. Split into the 9 digit VAT reference and a 3 digit subsidiary identifier.",
+        "properties": {
+          "registration_number": {
+            "type": "string",
+            "description": "The 9 digit VAT reference of the business",
+            "minLength": 9,
+            "maxLength": 9,
+            "pattern": "^[0-9]+$",
+            "examples": ["123456789"]
+          },
+          "subsidiary_identifier": {
+            "type": "string",
+            "description": "The 3 digit subsidiary identifier. This only exists if the business is part of a VAT group.",
+            "minLength": 3,
+            "maxLength": 3,
+            "pattern": "^[a-zA-Z0-9]+$",
+            "examples": ["123"]
+          }
+        },
+        "required": ["registration_number"],
+        "additionalProperties": false
+      },
+      "employer_paye": {
+        "type": "object",
+        "description": "The PAYE reference number (or Employer Reference Number) of the business. Split into the 3 digit tax office number and a tax office employer reference.",
+        "properties": {
+          "tax_office_number": {
+            "type": "string",
+            "description": "The 3 digit tax office number",
+            "minLength": 3,
+            "maxLength": 3,
+            "pattern": "^[0-9]+$",
+            "examples": ["123"]
+          },
+          "reference": {
+            "type": "string",
+            "description": "The tax office employer reference. This will be between 1 and 10 characters, which can be letters and numbers.",
+            "minLength": 1,
+            "maxLength": 10,
+            "pattern": "^[a-zA-Z0-9]+$",
+            "examples": ["AB456"]
+          }
+        },
+        "required": ["tax_office_number", "reference"],
+        "additionalProperties": false
+      },
+      "address": {
+        "type": "array",
+        "description": "The fields of the address for the reporting unit. At least 1 address line and Postcode will exist.",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        },
+        "minItems": 2,
+        "maxItems": 6,
+        "uniqueItems": true,
+        "examples": [
+          [
+            "SOUTH CERNEY WORKS",
+            "SHAWELL LANE",
+            "BEENHAM",
+            "STAFFS",
+            "BEDFORDSHIRE",
+            "GL4 5YU"
+          ]
+        ]
+      },
+      "business_description": {
+        "type": "string",
+        "description": "The business description for the local unit",
+        "minLength": 1,
+        "maxLength": 100,
+        "examples": ["PROVIDER OF CONSTRUCTION MATERIALS AND SUPPLIES"]
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "identifier",
+      "business_description",
+      "address",
+      "survey_id"
+    ]
+  }
