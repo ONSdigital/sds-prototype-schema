@@ -27,9 +27,11 @@ git fetch --unshallow
 
 # Get the latest commit SHA
 LATEST_COMMIT=$(git rev-parse HEAD)
-if [ $? -ne 0 ]; then
-  echo "Failed to retrieve the latest commit. Exiting."
-  exit 1
+
+# check last commit hash isn't empty
+if [ -z "$LAST_COMMIT_HASH" ]; then
+  echo "No last commit hash found. Using latest commit as start point."
+  $LAST_COMMIT_HASH=$LATEST_COMMIT
 fi
 
 # Write the latest commit hash to an environment variable file
@@ -85,6 +87,7 @@ if [ ${#ERROR_DIRECTORIES[@]} -gt 0 ]; then
     chmod 644 /workspace/error_directories.env
 fi
 
+# Sleep for 5 seconds to allow the environment variable files to be written and permissions to be set - timing not accurate
 sleep 5
 
 echo "New schema filepaths:"
