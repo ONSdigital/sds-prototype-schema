@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Load the environment variables
-NEW_SCHEMA_PUBSUB_TOPIC=${_NEW_SCHEMA_PUBSUB_TOPIC}
-SCHEMA_FAILURE_PUBSUB_TOPIC=${_SCHEMA_FAILURE_PUBSUB_TOPIC}
+NEW_SCHEMA_PUBSUB_TOPIC=${_SCHEMA_PUBLISH_PUBSUB_TOPIC_ID}
+SCHEMA_FAILURE_PUBSUB_TOPIC=${_SCHEMA_PUBLISH_FAIL_PUBSUB_TOPIC_ID}
 
 # check file exists
 if [ -f /workspace/new_schema_filepaths.env ]; then
