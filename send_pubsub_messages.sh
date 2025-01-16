@@ -15,7 +15,7 @@ if [ -f /workspace/new_schema_filepaths.env ]; then
         if [ -n "$new_schema_filepath" ]; then
             echo "Sending message for: $new_schema_filepath"
             # Send a Pub/Sub message with the schema file path
-            gcloud pubsub topics publish schemas-for-publication --message ${new_schema_filepath}
+            gcloud pubsub topics publish ${_SCHEMA_PUBLISH_PUBSUB_TOPIC_ID} --message ${new_schema_filepath}
         fi
     done
 else
