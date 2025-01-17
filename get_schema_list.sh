@@ -11,25 +11,23 @@ element_in_array() {
   return 1
 }
 
-# Get last commit hash from previous time the script was run
+# Get last commit hash from previous automation run
 source /workspace/last_commit_hash.env
 
 # Initialise the empty lists
 NEW_SCHEMA_FILEPATHS=()
 ERROR_DIRECTORIES=()
 
-# cd into the repository
+
 cd /workspace
-
 git checkout $BRANCH_NAME
-
 git fetch --unshallow
 
 # Get the latest commit SHA
 LATEST_COMMIT=$(git rev-parse HEAD)
 
-# check last commit hash isn't empty
-if [ -z "$LAST_COMMIT_HASH" ]; then
+# check if last commit hash is the initial version - if so use the latest commit as the start point
+if [ $LAST_COMMIT_HASH == "initial_version" ]; then
   echo "No last commit hash found. Using latest commit as start point."
   $LAST_COMMIT_HASH=$LATEST_COMMIT
 fi
