@@ -29,7 +29,7 @@ LATEST_COMMIT=$(git rev-parse HEAD)
 # check if last commit hash is the initial version - if so use the latest commit as the start point
 if [ $LAST_COMMIT_HASH == "initial_version" ]; then
   echo "First time running automation. Using latest commit as start point."
-  $LAST_COMMIT_HASH=$LATEST_COMMIT
+  LAST_COMMIT_HASH=$LATEST_COMMIT
 fi
 
 # Write the latest commit hash to an environment variable file
