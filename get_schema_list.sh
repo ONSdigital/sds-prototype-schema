@@ -28,7 +28,7 @@ LATEST_COMMIT=$(git rev-parse HEAD)
 
 # check if last commit hash is the initial version - if so use the latest commit as the start point
 if [ $LAST_COMMIT_HASH == "initial_version" ]; then
-  echo "No last commit hash found. Using latest commit as start point."
+  echo "First time running automation. Using latest commit as start point."
   $LAST_COMMIT_HASH=$LATEST_COMMIT
 fi
 
