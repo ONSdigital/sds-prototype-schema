@@ -31,7 +31,7 @@ if [ -f /workspace/error_directories.env ]; then
         if [ -n "$error_directory" ]; then
             echo "Sending error message for: $error_directory"
             # Send a Pub/Sub message with the error directory
-            gcloud pubsub topics publish fail-schema-topic --message ${error_directory}
+            gcloud pubsub topics publish ons-sds-publish-schema-fail-topic --message ${error_directory}
         fi
     done
 else
