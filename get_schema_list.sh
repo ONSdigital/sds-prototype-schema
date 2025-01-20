@@ -28,7 +28,7 @@ LATEST_COMMIT=$(git rev-parse HEAD)
 
 # check if last commit hash is the initial version - if so use the latest commit as the start point
 if [ $LAST_COMMIT_HASH == "initial_version" ]; then
-  echo "First time running automation. Using latest commit as start point."
+  echo "First time running automation. Using latest commit as  comparison start point."
   LAST_COMMIT_HASH=$LATEST_COMMIT
 fi
 
@@ -85,7 +85,7 @@ if [ ${#ERROR_DIRECTORIES[@]} -gt 0 ]; then
     chmod 644 /workspace/error_directories.env
 fi
 
-# Sleep for 5 seconds to allow the environment variable files to be written and permissions to be set - timing not accurate
+# Sleep for 5 seconds to allow the environment variable files to be written and permissions to be set
 sleep 5
 
 echo "New schema filepaths:"
