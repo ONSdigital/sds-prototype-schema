@@ -1,17 +1,17 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "v1.json",
-    "title": "SDS schema for survey 2",
+    "title": "SDS schema for survey 1",
     "type": "object",
     "properties": {
       "schema_version": {
-        "const": "v2",
+        "const": "v3",
         "description": "Version of the schema spec"
       },
       "survey_id": {
         "type": "string",
         "description": "The identifier for a particular survey",
-        "enum": ["3"]
+        "enum": ["1"]
       },
       "identifier": {
         "type": "string",

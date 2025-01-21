@@ -11,7 +11,7 @@
       "survey_id": {
         "type": "string",
         "description": "The identifier for a particular survey",
-        "enum": ["3"]
+        "enum": ["2"]
       },
       "identifier": {
         "type": "string",
