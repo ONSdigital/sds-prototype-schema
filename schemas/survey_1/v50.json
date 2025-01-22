@@ -1,0 +1,52 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "<survey-name>.json",
+    "title": "SDS schema for the <survey-name> survey",
+    "type": "object",
+
+    "properties": {
+      "schema_version": {
+        "const": "v50",
+        "description": "Version 3 of the schema spec 2"
+      },
+      "identifier": {
+        "type": "string",
+        "description": "The unique t   op-level identifier. This is the reporting unit reference without the check letter appended.",
+        "minLength": 11,
+        "pattern": "^[a-zA-Z0-9]+$",
+        "examples": ["34942807969"]
+      },
+      "items": {
+        "type": "object",
+        
+        "propertyNames": {
+          "pattern": "^[a-z0-9][a-z0-9\\-]*[a-z0-9]$",
+          "description": "Names for repeating ite         ms must be lower case, start with a letter or number, end with a letter or number, and contain only letters, numbers, or hyphens. This field can be shown in eQ URLs therefore no other characters are allowed."
+        },
+        "properties": {
+          "<some-name>": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "identifier": {
+                  "type": ["string", "integer"],
+                  "minLength": 1,
+                  "minimum": 0,
+                  "description": "The unique identifier for the item"
+                }
+              },
+              "additionalProperties": false,
+              "required": ["identifier"]
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": ["<some-name>"]
+      }
+    },
+    "additionalProperties": false,
+    "required": ["schema_version", "identifier"]
+  }
