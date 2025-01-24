@@ -48,19 +48,25 @@ fi
 # Convert NEW_FILES to an array
 IFS=$'\n' read -r -d '' -a SCHEMA_LIST <<<"${NEW_FILES}"
 
-# Add the schema files to the NEW_SCHEMA_FILEPATHS list if the subdirectory only contains 1 new file, otherwise add the subdirectory to the ERROR_DIRECTORIES list
+# Add the schema files to the NEW_SCHEMA_FILEPATHS list if the subdirectory only contains 1 new file
 for schema in "${SCHEMA_LIST[@]}"; do
-	# Get the subdirectory of the schema file
-	subdirectory=$(dirname "${schema}")
-	# Get the number of new files in the subdirectory
-	num_files=$(git diff --name-only --diff-filter=A "${LAST_COMMIT_HASH}" "${LATEST_COMMIT}" "${subdirectory}" | wc -l)
-	if [[ ${num_files} -eq 1 ]]; then
-		NEW_SCHEMA_FILEPATHS+=("${schema}")
-	else
-		if ! element_in_array "${subdirectory}" "${ERROR_DIRECTORIES[@]}"; then
-			ERROR_DIRECTORIES+=("${subdirectory}")
-		fi
-	fi
+    # Get the subdirectory of the schema file
+    subdirectory=$(dirname "${schema}")
+    # Skip template schemas that are not in a subdirectory
+    if [[ "${subdirectory}" == "/schemas" ]]; then
+        echo "Skipping template schema: ${schema}"
+        continue
+    fi
+    # Get the number of new files in the subdirectory
+    num_files=$(git diff --name-only --diff-filter=A "${LAST_COMMIT_HASH}" "${LATEST_COMMIT}" "${subdirectory}" | wc -l)
+    if [[ ${num_files} -eq 1 ]]; then
+        NEW_SCHEMA_FILEPATHS+=("${schema}")
+    else
+        # Add the subdirectory to ERROR_DIRECTORIES only if it doesn't already exist
+        if ! element_in_array "${subdirectory}" "${ERROR_DIRECTORIES[@]}"; then
+            ERROR_DIRECTORIES+=("${subdirectory}")
+        fi
+    fi
 done
 
 # Write the lists to environment variable files, ensuring no empty elements are written
