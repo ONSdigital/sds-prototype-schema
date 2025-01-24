@@ -53,7 +53,7 @@ for schema in "${SCHEMA_LIST[@]}"; do
     # Get the subdirectory of the schema file
     subdirectory=$(dirname "${schema}")
     # Skip template schemas that are not in a subdirectory
-    if [[ "${subdirectory}" == "/schemas" ]]; then
+    if [[ "${subdirectory}" == "schemas" ]]; then
         echo "Skipping template schema: ${schema}"
         continue
     fi
