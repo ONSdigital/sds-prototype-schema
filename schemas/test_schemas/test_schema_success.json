@@ -6,7 +6,7 @@
     "properties": {
       "schema_version": {
         "const": "test_schema_success",
-        "description": "Version of the schema spec"
+        "description": "Version of the schema spec for testing."
       },
       "survey_id": {
         "type": "string",
